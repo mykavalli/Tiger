@@ -1,0 +1,272 @@
+
+.content-share {
+    min-height: calc(100vh - 250px);
+    width: 100%;
+}
+
+.login-page footer {
+    font-size: 10px;
+}
+
+.login-page .card-header .h1:hover {
+    text-decoration: none;
+}
+
+/**Button danger custom*/
+    .btn.btn-custom-danger {
+        border: 1px solid red;
+        border-radius: 0;
+        position: relative;
+        background-color: #ff767680 !important;
+        color: black !important;
+    }
+
+    .btn.btn-custom-danger:after {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid red;
+        position: absolute;
+        left: 75%;
+        bottom: -2.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn.btn-custom-danger:before {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid red;
+        position: absolute;
+        right: 75%;
+        top: -3.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn:hover.btn-custom-danger:before {
+        right: 10%;
+        transition: 0.5s;
+    }
+
+    .btn:hover.btn-custom-danger:after {
+        left: 10%;
+        transition: 0.5s;
+    }
+
+    .btn.btn-custom-danger:hover {
+        box-shadow: 0 0 25px red;
+        transition: 0.6s;
+    }
+/**Button danger */
+/**Button info custom*/
+    .btn.btn-custom-info {
+        border: 1px solid #138496;
+        border-radius: 0;
+        position: relative;
+        background-color: #3be4ff !important;
+        color: black !important;
+    }
+
+    .btn.btn-custom-info:after {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #138496;
+        position: absolute;
+        left: 75%;
+        bottom: -2.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn.btn-custom-info:before {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #138496;
+        position: absolute;
+        right: 75%;
+        top: -3.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn:hover.btn-custom-info:before {
+        right: 10%;
+        transition: 0.5s;
+    }
+
+    .btn:hover.btn-custom-info:after {
+        left: 10%;
+        transition: 0.5s;
+    }
+
+    .btn.btn-custom-info:hover {
+        box-shadow: 0 0 25px #138496;
+        transition: 0.6s;
+    }
+/**Button info */
+/**Button success custom*/
+    .btn.btn-custom-success {
+        border: 1px solid #28a745;
+        border-radius: 0;
+        position: relative;
+        background-color: #33cd56 !important;
+        color: black !important;
+    }
+
+    .btn.btn-custom-success:after {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #28a745;
+        position: absolute;
+        left: 75%;
+        bottom: -2.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn.btn-custom-success:before {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #28a745;
+        position: absolute;
+        right: 75%;
+        top: -3.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn:hover.btn-custom-success:before {
+        right: 10%;
+        transition: 0.5s;
+    }
+
+    .btn:hover.btn-custom-success:after {
+        left: 10%;
+        transition: 0.5s;
+    }
+
+    .btn.btn-custom-success:hover {
+        box-shadow: 0 0 25px #28a745;
+        transition: 0.6s;
+    }
+/**Button success */
+/**Button primary custom*/
+    .btn.btn-custom-primary {
+        border: 1px solid #007bff;
+        border-radius: 0;
+        position: relative;
+        background-color: #489efb !important;
+        color: black !important;
+    }
+
+    .btn.btn-custom-primary:after {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #007bff;
+        position: absolute;
+        left: 75%;
+        bottom: -2.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn.btn-custom-primary:before {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #007bff;
+        position: absolute;
+        right: 75%;
+        top: -3.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn:hover.btn-custom-primary:before {
+        right: 10%;
+        transition: 0.5s;
+    }
+
+    .btn:hover.btn-custom-primary:after {
+        left: 10%;
+        transition: 0.5s;
+    }
+
+    .btn.btn-custom-primary:hover {
+        box-shadow: 0 0 25px #007bff;
+        transition: 0.6s;
+    }
+/**Button primary */
+/**Button warning custom*/
+    .btn.btn-custom-warning {
+        border: 1px solid #ffc107;
+        border-radius: 0;
+        position: relative;
+        background-color: #db941ed4 !important;
+        color: black !important;
+    }
+
+    .btn.btn-custom-warning:after {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #ffc107;
+        position: absolute;
+        left: 75%;
+        bottom: -2.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn.btn-custom-warning:before {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 1px solid #ffc107;
+        position: absolute;
+        right: 75%;
+        top: -3.5px;
+        display: block;
+        background-color: white;
+    }
+
+    .btn:hover.btn-custom-warning:before {
+        right: 10%;
+        transition: 0.5s;
+    }
+
+    .btn:hover.btn-custom-warning:after {
+        left: 10%;
+        transition: 0.5s;
+    }
+
+    .btn.btn-custom-warning:hover {
+        box-shadow: 0 0 25px #ffc107;
+        transition: 0.6s;
+    }
+/**Button warning */
+
+@media (max-width: 992px) {
+    .content-share {
+        min-height: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-share {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 540px) {
+    .content-share {
+        min-height: 200px;
+    }
+}

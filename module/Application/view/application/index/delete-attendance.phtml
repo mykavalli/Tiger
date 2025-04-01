@@ -1,0 +1,38 @@
+<div class="notification_all popup">
+    <div class="noti-content">
+        <div class="card">
+            <div class="card-header"><h4>Xóa dữ liệu chấm công <button class="btn btn-sm btn-custom-danger close-upload float-right" onclick="clearAction('action_js')"><i class="fa fa-times-circle pr-2"></i>Đóng</button></h4></div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <input type="hidden" name="type_post" value="delete_attendance_month">
+
+                        <div class="form-group col-0 col-md-4"></div>
+                        <div class="form-group col-12 col-md-2">
+                            <label for="month">Tháng</label>
+                            <select name="month" class="form-control custom-select select2bs4 text-center" required>
+                                <?php for ($i=1; $i <= 12 ; $i++) { ?>
+                                    <option <?php echo $i == date("m") ? "selected" : ''; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-md-2">
+                            <label for="year">Năm</label>
+                            <select name="year" class="form-control custom-select select2bs4 text-center" required>
+                                <?php for ($j=date("Y"); $j >= 2024 ; $j--) { ?>
+                                    <option value="<?php echo $j; ?>"><?php echo $j; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-0 col-md-4"></div>
+                        <hr>
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" class="btn btn-custom-danger"><i class="fas fa-trash-alt pr-2"></i>Thực hiện</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

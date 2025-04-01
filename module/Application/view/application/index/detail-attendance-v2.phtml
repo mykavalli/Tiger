@@ -1,0 +1,208 @@
+
+<?php
+    $this->headLink()
+	->prependStylesheet($this->basePath('public/plugins/daterangepicker/daterangepicker.css'))
+    ->prependStylesheet($this->basePath('public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('public/plugins/select2/css/select2.min.css'))
+    ->prependStylesheet($this->basePath('public/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'));
+
+    use Laminas\Session\Container;
+    $containerUser = new Container('user');
+
+    $firstDay = date('1-m-Y');
+    $lastDay = date("d-m-Y", strtotime('last day of this month'));
+
+    if (isset($_GET['date_report']) && $_GET['date_report'] != '') {
+        $date = explode(" - ", $_GET['date_report']);
+        $date_from = date("d-m-Y", strtotime(str_replace('/','-', $date[0]))).' 00:00';
+        $date_to = date("d-m-Y", strtotime(str_replace('/','-', $date[1]))).' 23:59';
+    } else {
+        $date_from = $firstDay;
+        $date_to = $lastDay;
+    }
+?>
+
+<div id="action_js"></div>
+<form method="post" id="update_customer">
+    <input type="hidden" name="type_post" value="update_customer">
+</form>
+
+<div class="col-12">
+    <div class="card card-info">
+        <div class="card-body ">
+            <form id="form_search" method="get">
+                <div class="row">
+                    <div class="col-0 col-md-3 form-group"></div>
+                    <div class="col-12 col-md-2 form-group">
+                        <label for="fullname">Nhân sự</label>
+                        <select id="user" name="user" class="form-control custom-select change-select select2bs4">
+                            <option value="">---------</option>
+                            <?php if ($listUser != null){ foreach ($listUser as $key => $value) { ?>
+                                <option <?php echo isset($_GET['user']) && $_GET['user'] == $value['id'] ? 'selected' : ''; ?> value="<?php echo $value['id']; ?>"><?php echo $value['fullname']; ?></option>
+                            <?php }} ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2 form-group">
+                        <label for="jobs">Công việc</label>
+                        <select id="jobs" name="jobs" class="form-control custom-select change-select select2bs4">
+                            <option value="">---------</option>
+                            <?php if ($listJob != null){ foreach ($listJob as $key => $value) { ?>
+                                <option <?php echo isset($_GET['jobs']) && $_GET['jobs'] == $value['id'] ? 'selected' : ''; ?> value="<?php echo $value['id']; ?>"><?php echo $value['job_name']; ?></option>
+                            <?php }} ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2 form-group">
+                        <label for="date_report">Khoảng thời gian</label>
+                        <input type="text" id="date_report" name="date_report" value="<?php echo isset($_GET['date_report']) && $_GET['date_report'] != '' ? $_GET['date_report'] : ''; ?>" class="form-control text-center" >
+                    </div>
+                    <div class="col-0 col-md-3 form-group"></div>
+                    
+                    <div class="col-12 text-center form-group">
+                        <button id="item_search" type="submit" class="btn btn-custom-info  btn-search"><i class="fa fa-search pr-2"></i>Tìm kiếm</button>
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-custom-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-angle-double-down pr-2"></i>Báo cáo</button>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-divider"></div>
+                            <button type="button" class="dropdown-item" onclick="modifyData('get_form_del', '', '', '')"><i class="fa fa-trash-alt pr-2"></i>Xóa dữ liệu cũ</button>
+                            <div class="dropdown-divider"></div>
+                            <button type="button" class="dropdown-item" onclick="modifyData('get_form_upload', '', '', '')"><i class="fa fa-file-excel pr-2"></i>Excel - Import</button>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                        </div>
+                        <div id="download_div"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card card-info">
+        <div class="card-body">
+            <?php $daysInMonth = (strtotime($date_to) - strtotime($date_from))/86400 + 1; ?>
+
+            <?php if (isset($data) && $data != null && isset($_GET['user'])) { foreach($data as $key => $value){ ?>
+                <table id="" class="table table-bordered table-hover table-like-striped">
+                    <thead class="vera-middle text-center border-top">
+                        <tr class="text-center text-bold bg-info font-20"><td colspan="<?php echo $daysInMonth; ?>"><?php echo isset($listUser[$key]) ? $listUser[$key]['fullname'].' - '.$listUser[$key]['position'] : ''; ?></td></tr>
+                        <tr>
+                            <?php for ($i=1; $i < $daysInMonth; $i++) { ?>
+                                <th><?php echo date("d", strtotime($date_from)) + ($i - 1); ?></th>
+                            <?php } ?>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <?php $sumAtt = 0; $sumOff = 0; if ($value != null) { foreach($value as $ke => $val){ $att = 0; ?>
+                            <tr>
+                                <?php for($j = 1; $j < $daysInMonth; $j ++){ ?>
+                                    <?php $day = date("Y-m-d", strtotime($date_from." +".($j - 1)." day")); ?>
+                                    <td><?php echo isset($val[$day]) ? ($val[$day]['type_work'] == 0 || $val[$day]['type_work'] == 1 || $val[$day]['type_work'] == 3 ? '<i class="fas fa-check text-bold text-success"></i>' : ($val[$day]['type_work'] == 4 ? '<i class="far fa-user-circle text-bold text-primary"></i>' : '<i class="fas fa-user-times text-bold text-danger"></i>')) : ''; ?></td>
+                                <?php $att += isset($val[$day]) && $val[$day]['type_work'] != 2 ? 1 : 0; } ?>
+                            </tr>
+                            <tr class="text-left text-bold bg-bisque text-uppercase"><td colspan="<?php echo $daysInMonth; ?>"><?php echo isset($listJob[$ke]) ? $listJob[$ke]['job_name'].'  &nbsp; &nbsp; &nbsp;--|-- &nbsp; &nbsp; &nbsp; Ngày công: '.$att : ''; ?></td></tr>
+                        <?php $sumAtt += $att; $sumOff += isset($listJob[$ke]) && $listJob[$ke]['type_works'] == '2' ? 1 : 0; }} ?>
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-hover text-bold text-danger">
+                            <td colspan="<?php echo $daysInMonth; ?>">Tổng ngày công:  &nbsp;<?php echo $sumAtt; ?> &nbsp; &nbsp; &nbsp; --|-- &nbsp; &nbsp; &nbsp; Tổng ngày nghỉ:  &nbsp;<?php echo $sumOff; ?></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <?php if ($key != '' && isset($listUser[$key])){ ?>
+                    <form method="post" id="formDelete<?php echo $key; ?>" enctype="multipart/form-data">
+                        <div class="row">
+                            <input type="hidden" name="type_post" value="delete_attendance">
+                            <input type="hidden" name="driver" value="<?php echo isset($key) ? $key : ''; ?>">
+                            <input type="hidden" name="date_report" value="<?php echo isset($_GET['date_report']) ? $_GET['date_report'] : date('d/m/Y').' - '.date('d/m/Y') ; ?>">
+                            <div class="col-12 text-center form-group mt-3">
+                                <div>
+                                    <button type="button" title="Xóa chấm công" name-delete="Chấm công: <?php echo isset($listUser[$key]) ? $listUser[$key]['fullname'].' - '.$listUser[$key]['position'] : ''; ?>" data-form="formDelete<?php echo $key; ?>" class="btn btn-sm btn-custom-danger delete_button"><i class="fas fa-trash-alt pr-2"></i>Xóa chấm công</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <?php } ?>
+            <?php }} ?>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Page specific script -->
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        $('#example2').DataTable({
+            "paging": true,
+            "pageLength": 20,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+        });
+
+        $('#date_report').daterangepicker({
+            timePicker: false,
+            timePickerIncrement: 30,
+            startDate: '<?php echo isset($_GET['date_report']) ? $date_from : $firstDay; ?>',
+            endDate: '<?php echo isset($_GET['date_report']) ? $date_to : $lastDay; ?>',
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+                maxSpan: {
+                days: 30
+            }
+        })
+
+        $('.change-select').change(function(){
+            $('#form_search').submit();
+        });
+    });
+    
+
+    function modifyData(type_post, quarterCode, id, quarter) {
+        $.ajax({
+        type: 'POST',
+        url: $(location).attr('href'),
+        data: {type_post: type_post, quarterCode: quarterCode, id: id, quarter: quarter},
+        success: function(data) {
+            if (data != null) {
+                $('#action_js').empty();
+                $('#action_js').append(data);
+            }
+        },
+        error: function (error) {
+            swal.fire({
+                title: 'Error: ' + error.statusText,
+                text: name,
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok !',
+            })
+        }
+        });
+    }
+
+</script>
+
+<?php
+    $this->inlineScript()
+    ->prependFile($this->basePath('public/plugins/daterangepicker/daterangepicker.js'))
+    ->prependFile($this->basePath('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'))
+    ->prependFile($this->basePath('public/plugins/datatables-responsive/js/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('public/plugins/datatables/jquery.dataTables.min.js'))
+    ->prependFile($this->basePath('public/plugins/select2/js/select2.full.min.js'));
+?>

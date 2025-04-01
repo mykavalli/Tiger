@@ -1,0 +1,157 @@
+
+<?php
+    $this->headLink()
+	->prependStylesheet($this->basePath('public/plugins/daterangepicker/daterangepicker.css'))
+    ->prependStylesheet($this->basePath('public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'))
+    ->prependStylesheet($this->basePath('public/plugins/select2/css/select2.min.css'))
+    ->prependStylesheet($this->basePath('public/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'));
+
+    use Laminas\Session\Container;
+    $containerUser = new Container('user');
+
+    $date = new DateTime();
+    $firstDay = date('1-m-Y', strtotime('-1 month'));
+    $lastDay = $date->modify('last day of this month');
+
+    if (isset($_GET['date_report']) && $_GET['date_report'] != '') {
+        $date = explode(" - ", $_GET['date_report']);
+        $date_from = date("d-m-Y", strtotime(str_replace('/','-', $date[0]))).' 00:00';
+        $date_to = date("d-m-Y", strtotime(str_replace('/','-', $date[1]))).' 23:59';
+    }
+?>
+
+<div id="action_js"></div>
+<form method="post" id="update_customer">
+    <input type="hidden" name="type_post" value="update_customer">
+</form>
+
+<div class="col-12">
+    <div class="card card-info">
+        <div class="card-body ">
+            <form id="form_search" method="get">
+                <div class="row">
+                    <div class="col-0 col-md-4 form-group"></div>
+                    <div class="col-12 col-md-2 form-group">
+                        <label for="user">Nhân sự</label>
+                        <select id="user" name="user" class="form-control custom-select change-select select2bs4">
+                            <option value="">---------</option>
+                            <?php if ($listUser != null){ foreach ($listUser as $key => $value) { ?>
+                                <option <?php echo isset($_GET['user']) && $_GET['user'] == $value['id'] ? 'selected' : ''; ?> value="<?php echo $value['id']; ?>"><?php echo $value['fullname']; ?></option>
+                            <?php }} ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2 form-group">
+                        <label for="status">Trạng thái</label>
+                        <select id="status" name="status" class="form-control custom-select change-select select2bs4">
+                            <option <?php echo isset($_GET['status']) && $_GET['status'] == 'active' ? 'selected' : ''; ?> value="<?php echo 'active'; ?>">Hoạt động</option>
+                            <option <?php echo isset($_GET['status']) && $_GET['status'] == 'inactive' ? 'selected' : ''; ?> value="<?php echo 'inactive'; ?>">Nghỉ việc</option>
+                        </select>
+                    </div>
+                    <div class="col-0 col-md-4 form-group"></div>
+                    
+                    <div class="col-12 text-center form-group">
+                        <button id="item_search" type="submit" class="btn btn-custom-info"><i class="fa fa-search pr-2"></i>Tìm kiếm</button>
+                        <button id="item_search" type="button" class="btn btn-custom-warning" onclick="modifyUser('view_user', '')"><i class="fa fa-plus pr-2"></i>Thêm mới</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card card-info">
+        <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover table-like-striped">
+                <thead class="vera-middle text-center border-top">
+                    <tr>
+                        <th>{<span class="text-danger">.<?php echo isset($data) ? count($data) : ''; ?>.</span>} #</th>
+                        <th>Mã</th>
+                        <th>Họ và tên</th>
+                        <th>Vị trí</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <?php if (isset($data) && $data != null) { $i=1; foreach ($data as $key => $value){ ?>
+                        <tr class="<?php echo $value['status'] == 'inactive' ? 'bg-bisque text-danger' : ''; ?>">
+                            <td>
+                                <button type="button" class="btn btn-xs btn-custom-primary" onclick="modifyUser('view_user', '<?php echo $value['id']; ?>')"><i class="fa fa-eye pr-1"></i> Sửa</button>
+                                <form class="d-inline" id="formDelete<?php echo $key; ?>" method="post">
+                                    <input type="hidden" name="type_post" value="delete_user">
+                                    <input type="hidden" name="id" value="<?php echo $value['id']; ?>">
+                                    <button title="Xóa user" class="btn btn-xs btn-custom-danger delete_button" name-delete="<?php echo $value['fullname']; ?>" data-form="formDelete<?php echo $key; ?>" type="button"><i class="fa fa-trash-alt pr-2 pl-2"></i> </button>
+                                </form>
+                            </td>
+                            <td><?php echo $value['id']; ?></td>
+                            <td class="text-left"><?php echo $value['fullname']; ?></td>
+                            <td><?php echo $value['position']; ?></td>
+                            <td><?php echo $value['status'] == 'active' ? '<i class="fas fa-check-circle font-bold text-info font-15"></i>' : '<i class="fas fa-ban font-bold text-danger font-15"></i>'; ?></td>
+                        </tr>
+                    <?php $i++; }} ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Page specific script -->
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        $('#example2').DataTable({
+            "paging": true,
+            "pageLength": 20,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+        });
+    });
+    
+
+    function modifyUser(type_post, id) {
+        $.ajax({
+        type: 'POST',
+        url: $(location).attr('href'),
+        data: {type_post: type_post, id: id},
+        success: function(data) {
+            if (data != null) {
+                $('#action_js').empty();
+                $('#action_js').append(data);
+            }
+        },
+        error: function (error) {
+            swal.fire({
+                title: 'Error: ' + error.statusText,
+                text: name,
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok !',
+            })
+        }
+        });
+    }
+
+</script>
+
+<?php
+    $this->inlineScript()
+    ->prependFile($this->basePath('public/plugins/daterangepicker/daterangepicker.js'))
+    ->prependFile($this->basePath('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'))
+    ->prependFile($this->basePath('public/plugins/datatables-responsive/js/dataTables.responsive.min.js'))
+    ->prependFile($this->basePath('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'))
+    ->prependFile($this->basePath('public/plugins/datatables/jquery.dataTables.min.js'))
+    ->prependFile($this->basePath('public/plugins/select2/js/select2.full.min.js'));
+?>

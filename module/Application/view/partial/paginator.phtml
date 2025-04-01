@@ -1,0 +1,64 @@
+<?php if($this->pageCount): 
+	$param = "";
+	isset($_GET['usercode']) ? $param .= '&usercode='.$_GET['usercode'] :'';
+	isset($_GET['name']) ? $param .= '&name='.$_GET['name'] :'';
+	isset($_GET['department']) ? $param .= '&department='.$_GET['department'] :'';
+	isset($_GET['user_code']) ? $param .= '&user_code='.$_GET['user_code'] :'';
+	isset($_GET['request_sender']) ? $param .= '&request_sender='.$_GET['request_sender'] :'';
+	isset($_GET['request_type']) ? $param .= '&request_type='.$_GET['request_type'] :'';
+	isset($_GET['request_status']) ? $param .= '&request_status='.$_GET['request_status'] :'';
+	isset($_GET['date_from']) ? $param .= '&date_from='.$_GET['date_from'] :'';
+	isset($_GET['date_to']) ? $param .= '&date_to='.$_GET['date_to'] :'';
+	?>
+
+<div class="col-12">
+    <ul class="pagination justify-content-left">
+    	<!-- Previous page link -->
+    	<?php if(isset($this->previous)): ?>
+    	<li class="page-item">
+    		<a href="<?= $this->url($this->route, [], ['query' => ['page' => $this->previous]]).$param; ?>"
+    			tabindex="-1" aria-disabled="true" class="page-link">
+    			Previous
+    		</a>
+    	</li>
+    	<?php else: ?>
+    		<li class="page-item disabled">
+    			<a href="#" class="page-link">
+    				First
+    			</a>
+    		</li> <!-- suspect -->
+    	<?php endif; ?>
+    	<!-- NUmbered page links -->
+    	<?php foreach($this->pagesInRange as $page): ?>
+    		<?php if($page !== $this->current): ?>
+    			<li class="page-item">
+    				<a href="<?= $this->url($this->route, [], ['query' => ['page' => $page]]).$param; ?>" class="page-link"> <?= $page; ?>
+    				</a>
+    			</li>
+    		<?php else: ?>
+    			<li class="active page-item">
+    				<a href="#" class="page-link">
+    					<?= $page; ?>
+    				</a>
+    			</li>
+    		<?php endif; ?>
+    	<?php endforeach; ?>
+    	<!-- Next page link -->
+    	<?php if(isset($this->next)): ?>
+    		<li class="page-item">
+    			<a href="<?= $this->url($this->route, [], ['query' => ['page' => $this->next]]).$param; ?>" class="page-link">
+    				Next
+    			</a>
+    		</li>
+    	<?php else: ?>
+    		<li class="disabled page-item">
+    			<a href="#" class="page-link">
+    				Lasted
+    			</a>
+    		</li>
+    	<?php endif; ?>
+
+    </ul>
+</div>
+<?php
+endif;

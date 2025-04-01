@@ -1,0 +1,20 @@
+<?php
+
+    # Note $this->flashMessenger() refers to a helper that is defined in the Laminas Framework
+    $flash = $this->flashMessenger();
+    
+    $flash->setMessageOpenFormat(
+        '<div%s>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                &times;
+            </button>
+
+            <ul class="list-unstyled">
+                <li>'
+    )->setMessageSeparatorString('</li><li>')->setMessageCloseString('</li></ul></div>');
+
+
+    echo $flash->render('info', ['alert mainAlert', 'alert-dismissable', 'alert-info']);
+    echo $flash->render('error', ['alert mainAlert', 'alert-dismissable', 'alert-danger']);
+    echo $flash->render('default', ['alert mainAlert', 'alert-dismissable', 'alert-warning']);
+    echo $flash->render('success', ['alert mainAlert', 'alert-dismissable', 'alert-success']);

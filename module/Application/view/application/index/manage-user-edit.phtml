@@ -1,0 +1,38 @@
+<div class="notification_all popup">
+    <div class="noti-content">
+        <div class="card">
+            <div class="card-header"><h4>Chi tiết <button class="btn btn-sm btn-custom-danger close-upload float-right" onclick="clearAction('action_js')"><i class="fa fa-times-circle pr-2"></i>Đóng</button></h4></div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <input type="hidden" name="type_post" value="modify_user">
+                        <input type="hidden" name="id" value="<?php echo isset($user) ? $user['id'] : ''; ?>">
+
+                        <div class="form-group col-0 col-md-3"></div>
+                        <div class="form-group col-12 col-md-2">
+                            <label for="fullname">Họ và tên</label>
+                            <input type="text" id="fullname" name="fullname" value="<?php echo isset($user) ? $user['fullname'] : ''; ?>" class="text-center form-control" required>
+                        </div>
+                        <div class="form-group col-12 col-md-2">
+                            <label for="position">Vị trí</label>
+                            <input type="text" id="position" name="position" value="<?php echo isset($user) ? $user['position'] : ''; ?>" class="text-center form-control" required>
+                        </div>
+                        <div class="form-group col-12 col-md-2">
+                            <label for="status">Trạng thái</label>
+                            <select name="status" class="form-control custom-select change-select select2bs4" required>
+                                <option <?php echo isset($user['status']) && $user['status'] == 'active' ? 'selected' : ''; ?> value="<?php echo 'active'; ?>">Đang hoạt động</option>
+                                <option <?php echo isset($user['status']) && $user['status'] == 'inactive' ? 'selected' : ''; ?> value="<?php echo 'inactive'; ?>">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-0 col-md-3"></div>
+                        <hr>
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" class="btn btn-custom-success"><i class="fas fa-upload pr-2"></i>Cập nhật</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,7 +29,9 @@ return [
 	    ],
 		'db' => [
 				'driver' => 'Pdo',
-				'dsn' => 'mysql:dbname=ethamwsb_tuongvi;hostname=localhost;user=root',
+				'dsn' => 'mysql:dbname=ethamwsb_tuongvi;hostname=localhost;charset=utf8',
+				'username' => 'ethamwsb_tuongvi',
+				'password' => 'Khongchoduocdau0',
 				'driver_options' => [
 						PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
 				]

@@ -8,7 +8,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?= $this->headTitle('DanOnFoods - Management system')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headTitle('Coconuts - Management system')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?= $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -29,8 +29,6 @@
         ?>
         <link href="<?php echo $this->basePath('public/css/custom-auth.css'); ?>" media="screen" rel="stylesheet" type="text/css">
 
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TBTFG54E9"></script>
         <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -43,12 +41,12 @@
     <body class="login-page">
         <div class="container">
             <div class="text-center mt-2">
-                <img src="<?php echo $this->basePath('public/img/layout/DOF_Logo_128x128.png'); ?>" style="width: 128px;" alt="Danonfoods Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="<?php echo $this->basePath('public/img/layout/Logo.jpg'); ?>" style="width: 128px;" alt="Coconuts Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
             </div>
         	<?= $this->partial('partial/flash.phtml', $this->flashMessenger()); ?>
             <?= $this->content ?>
             <footer class="text-center">
-                <strong>Copyright &copy; 2020 <a href="https://danonfoods.com">Danonfoods</a>.</strong>
+                <strong>Copyright &copy; 2025 <a href="https://tuongvi.ethanworkspace.com">Coconuts</a>.</strong>
                 All rights reserved.
             </footer>
         </div>

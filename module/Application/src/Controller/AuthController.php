@@ -213,7 +213,7 @@ class AuthController extends AbstractActionController
 						$containerUser['Link'] = '';
 						return $this->redirect()->toUrl((isset($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$link);
 					} else {
-						return $this->redirect()->toRoute('dashboard');
+						return $this->redirect()->toRoute('manage-attendance-v2');
 					}
 					break;
 					

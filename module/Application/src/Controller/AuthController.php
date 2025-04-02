@@ -24,7 +24,6 @@ use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Smtp as SmtpTransport;
 use Laminas\Mail\Transport\SmtpOptions;
 
-use Application\Model\UsersTable;
 use Application\Model\AuthenticationTable;
 
 use Laminas\Log\Logger;
@@ -35,18 +34,15 @@ use Ramsey\Uuid\Uuid;
 class AuthController extends AbstractActionController
 {
 	private $adapter;
-	private $usersTable;
 	private $authenticationTable;
 	private $logger;
 	private $ip;
 	
 	public function __construct(
 		Adapter $adapter, 
-		UsersTable $usersTable, 
 		AuthenticationTable $authenticationTable)
 	{
 		$this->adapter = $adapter;
-		$this->usersTable = $usersTable;
 		$this->authenticationTable = $authenticationTable;
 
 		/**Get log */
@@ -355,7 +351,7 @@ class AuthController extends AbstractActionController
                     }
                     if ($request->isPost()){
                         $dataPost = $request->getPost()->toArray();
-                        $check = $this->usersTable->saveUsers([
+                        $check = $this->authenticationTable->saveUsers([
                             'id' => $dataPost['code'],
                             'reset_pw_token' => '',
                             'active' => '1',
@@ -401,9 +397,9 @@ class AuthController extends AbstractActionController
         $routeMatch = $this->getEvent()->getRouteMatch();
 		$routeName = $routeMatch->getMatchedRouteName();
 
-		$checkAccess = $this->rolesTable->checkRole($containerUser['Role'], $routeName);
-		$allUser = $this->usersTable->fetchAllUsers(false);
-		$allBranch = $this->branchTable->fetchAllBranch();
+		// $checkAccess = $this->rolesTable->checkRole($containerUser['Role'], $routeName);
+		$allUser = $this->authenticationTable->getAllUser();
+		// $allBranch = $this->branchTable->fetchAllBranch();
 				
 		$container = new Container('HeaderContent');
 		$container['HeaderTitle'] = $containerUser['Translate'][$containerUser['language']]['menu_personal_info'];
@@ -447,21 +443,21 @@ class AuthController extends AbstractActionController
 				$tmpName = $_FILES['avatar']['tmp_name'];
 				move_uploaded_file($tmpName, 'public/img/user/'.$fileName);
 				$data['photo'] = $fileName;
-				$this->usersTable->saveUsers($data);
+				$this->getAllUser->saveUsers($data);
 				$containerUser['Photo'] = $fileName;
 
 				return $this->redirect()->toRoute('profile');
 			}
 			if (isset($data['change_profile'])) {
 				$data['birthday'] = date('Y-m-d 00:00:00', strtotime(str_replace('/','-',$data['birthday'])));
-				$this->usersTable->saveUsers($data);
+				$this->getAllUser->saveUsers($data);
 				$containerUser['Fullname'] = $data['fullname'];
 				$containerUser['Gender'] = $data['gender'];
 				return $this->redirect()->toRoute('profile');
 			}
 		}
 		
-		$user = $this->usersTable->fetchAccountByUsername($containerUser['Username']);
+		$user = $this->getAllUser->getOneByUsername($containerUser['Username']);
 		
 		return new ViewModel([
 			'positions' => $positions,

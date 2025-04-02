@@ -1,11 +1,11 @@
 <?php 
 declare(strict_types=1);
 
-namespace Manager\Model;
+namespace Application\Model;
 
 use Laminas\Db\TableGateway\AbstractTableGateway;
 use Laminas\Db\Adapter\Adapter;
-use Manager\Model\Entity\UserEntity;
+use Application\Model\Entity\UserEntity;
 use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Paginator\Adapter\DbSelect;

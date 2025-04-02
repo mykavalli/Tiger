@@ -103,7 +103,7 @@ class AuthController extends AbstractActionController
 		$auth = new AuthenticationService();
 		$containerUser = new Container('user');
 		if ($auth->hasIdentity()){
-			return $this->redirect()->toRoute('dashboard');
+			return $this->redirect()->toRoute('manage-attendance-v2');
 		}
 		
 		$request = $this->getRequest();
@@ -427,7 +427,7 @@ class AuthController extends AbstractActionController
 		if (!$checkAccess)
 		{
 			$this->flashMessenger()->addErrorMessage($containerUser['Translate'][$containerUser['language']]['content_not_allow_access']);
-			return $this->redirect()->toRoute('dashboard');
+			return $this->redirect()->toRoute('manage-attendance-v2');
 		}
 
 		$logger = $this->logger;

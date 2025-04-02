@@ -25,6 +25,7 @@ use Laminas\Mail\Transport\Smtp as SmtpTransport;
 use Laminas\Mail\Transport\SmtpOptions;
 
 use Manager\Model\Table\UsersTable;
+use Manager\Model\Table\AuthenticationTable;
 use Manager\Model\Table\RolesTable;
 
 use Laminas\Log\Logger;
@@ -36,6 +37,7 @@ class AuthController extends AbstractActionController
 {
 	private $adapter;
 	private $usersTable;
+	private $authenticationTable;
 	private $rolesTable;
 	private $logger;
 	private $ip;
@@ -43,10 +45,12 @@ class AuthController extends AbstractActionController
 	public function __construct(
 		Adapter $adapter, 
 		UsersTable $usersTable, 
+		AuthenticationTable $authenticationTable, 
 		RolesTable $rolesTable)
 	{
 		$this->adapter = $adapter;
 		$this->usersTable = $usersTable;
+		$this->authenticationTable = $authenticationTable;
 		$this->rolesTable = $rolesTable;
 
 		/**Get log */

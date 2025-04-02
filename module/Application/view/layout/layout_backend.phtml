@@ -98,36 +98,34 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item toggle-class <?php echo strpos($_SERVER['REQUEST_URI'],'/v2') !== false ? 'menu-open' : ''; ?>">
-                            <a href="#" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2') !== false ? 'active' : ''; ?>">
+                        <li class="nav-item">
+                            <a href="<?php echo $this->url('manage-attendance-v2'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2/manage-attendance') !== false ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Version 2 <i class="fas fa-angle-double-left right"></i></p>
+                                <p>Chấm công tổng hợp</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="pl-3 nav-item">
-                                    <a href="<?php echo $this->url('manage-attendance-v2'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2/manage-attendance') !== false ? 'active' : ''; ?>">
-                                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                                        <p>Chấm công tổng hợp</p>
-                                    </a>
-                                </li>
-                                <li class="pl-3 nav-item">
-                                    <a href="<?php echo $this->url('detail-attendance-v2'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2/detail-attendance') !== false ? 'active' : ''; ?>">
-                                        <i class="nav-icon fas fa-user-clock"></i>
-                                        <p>Chấm công chi tiết</p>
-                                    </a>
-                                </li>
-                                <li class="pl-3 nav-item">
-                                    <a href="<?php echo $this->url('manage-job-v2'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2/manage-job') !== false ? 'active' : ''; ?>">
-                                        <i class="nav-icon fas fa-dolly"></i>
-                                        <p>Công việc</p>
-                                    </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $this->url('detail-attendance-v2'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2/detail-attendance') !== false ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-user-clock"></i>
+                                <p>Chấm công chi tiết</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $this->url('manage-job-v2'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'/v2/manage-job') !== false ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-dolly"></i>
+                                <p>Công việc</p>
+                            </a>
                         </li>
                         <li class="nav-item <?php echo strpos($_SERVER['REQUEST_URI'],'manage-user') !== false ? 'active' : ''; ?>">
                             <a href="<?php echo $this->url('manage-user'); ?>" class="nav-link  <?php echo strpos($_SERVER['REQUEST_URI'],'manage-user') !== false ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>Nhân sự</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $this->url('logout'); ?>" class="nav-link">
+                                <i class="nav-icon fas fa-power-off"></i>
+                                <p>Đăng xuất</p>
                             </a>
                         </li>
                     </ul>

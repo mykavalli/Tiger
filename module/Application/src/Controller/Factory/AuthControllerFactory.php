@@ -9,6 +9,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Manager\Controller\AuthController;
 use Laminas\Db\Adapter\Adapter;
 use Manager\Model\Table\UsersTable;
+use Manager\Model\Table\AuthenticationTable;
 use Manager\Model\Table\RolesTable;
 
 class AuthControllerFactory implements FactoryInterface
@@ -18,6 +19,7 @@ class AuthControllerFactory implements FactoryInterface
 		return new AuthController(
 				$container->get(Adapter::class),
 				$container->get(UsersTable::class),
+				$container->get(AuthenticationTable::class),
 				$container->get(RolesTable::class)
 		);
 	}

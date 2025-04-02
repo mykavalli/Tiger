@@ -12,6 +12,7 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Json\Json;
 
 use Application\Model\HRMTable;
+use Application\Model\AuthenticationTable;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -24,10 +25,12 @@ use Ramsey\Uuid\Uuid;
 class IndexController extends AbstractActionController
 {
 	private $hrmTable;
+	private $authenticationTable;
 	
-	public function __construct(HrmTable $hrmTable)
+	public function __construct(HrmTable $hrmTable, AuthenticationTable $authenticationTable)
 	{
 		$this->hrmTable = $hrmTable;
+		$this->authenticationTable = $authenticationTable;
 		
 		$this->pathDownload = getcwd().'/htdocs/public/downloads/';
 		$this->pathReader = getcwd().'/htdocs/public/form/';

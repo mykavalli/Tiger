@@ -17,7 +17,7 @@ class IndexControllerFactory implements FactoryInterface
 	{
 		return new IndexController(
 			$container->get(HRMTable::class),
-			$container->get(AuthenticationTable::class)
+			$container->get(AuthenticationTable::class),
 		);
 	}
 }

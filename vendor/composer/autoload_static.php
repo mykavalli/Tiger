@@ -8,6 +8,7 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
 {
     public static $files = array (
         'c9d07b32a2e02bc0fc582d4f0c1b56cc' => __DIR__ . '/..' . '/laminas/laminas-servicemanager/src/autoload.php',
+        'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -15,6 +16,11 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
         array (
             'Webmozart\\Assert\\' => 17,
             'Webimpress\\SafeWriter\\' => 22,
+        ),
+        'R' => 
+        array (
+            'Ramsey\\Uuid\\' => 12,
+            'Ramsey\\Collection\\' => 18,
         ),
         'P' => 
         array (
@@ -61,6 +67,7 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
         'B' => 
         array (
             'Brick\\VarExporter\\' => 18,
+            'Brick\\Math\\' => 11,
         ),
         'A' => 
         array (
@@ -77,6 +84,14 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
         'Webimpress\\SafeWriter\\' => 
         array (
             0 => __DIR__ . '/..' . '/webimpress/safe-writer/src',
+        ),
+        'Ramsey\\Uuid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ramsey/uuid/src',
+        ),
+        'Ramsey\\Collection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ramsey/collection/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -225,6 +240,10 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
         'Brick\\VarExporter\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/varexporter/src',
+        ),
+        'Brick\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/brick/math/src',
         ),
         'Application\\' => 
         array (

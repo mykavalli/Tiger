@@ -746,9 +746,8 @@ class IndexController extends AbstractActionController
 		}
 		if (isset($_GET['status']) && $_GET['status'] != '') {
 			$dataSearch['status'] = $_GET['status'];
-		} else {
-			$dataSearch['status'] = 'active';
 		}
+		
 		// if (isset($_GET['jobs']) && $_GET['jobs'] != '') {
 		// 	$dataSearch['jobs'] = $_GET['jobs'];
 		// }

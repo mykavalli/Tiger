@@ -97,7 +97,7 @@ class AuthController extends AbstractActionController
 
         // Alternatively, you can display a custom error view
         $viewModel = new ViewModel();
-        $viewModel->setTemplate('error/error-handle'); // Customize the template name as per your project
+        $viewModel->setTemplate('error/404'); // Customize the template name as per your project
         return $viewModel;
     }
 	
@@ -117,7 +117,7 @@ class AuthController extends AbstractActionController
 			$data = $request->getPost()->toArray();
 			
 			$authAdapter = new CredentialTreatmentAdapter($this->adapter);
-			$authAdapter->setTableName($this->usersTable->getTable())
+			$authAdapter->setTableName($this->authenticationTable->getTable())
 			->setIdentityColumn('username')
 			->setCredentialColumn('password')
 			->getDbSelect()->where(['active' => 1]);
@@ -126,14 +126,14 @@ class AuthController extends AbstractActionController
 			# password hashing class
 			$hash = new Bcrypt();
 			
-			$info = $this->usersTable->fetchAccountByUsername($data['username']);
+			$info = $this->authenticationTable->getOneByUsername($data['username']);
 
 			if ($info != null) 
 			{
-				$userRole = $this->rolesTable->fetchRoleByColumn('role', $info->getRole());
+				// $userRole = $this->rolesTable->fetchRoleByColumn('role', $info->getRole());
 				# now compare password from form input with that already in the table
-				if($hash->verify($data['password'], $info->getPassword())) {
-					$authAdapter->setCredential($info->getPassword());
+				if($hash->verify($data['password'], $info['password'])) {
+					$authAdapter->setCredential($info['password']);
 				} else {
 					$authAdapter->setCredential(''); # why? to gracefully handle errors
 				}
@@ -144,7 +144,7 @@ class AuthController extends AbstractActionController
 				return $this->redirect()->refresh(); # refresh the page to show error
 			}
 
-			if ($info->getActive() != '1') 
+			if ($info['active'] != '1') 
 			{
 				$this->flashMessenger()->addErrorMessage('Tài khoản đang tạm khóa !');
 				return $this->redirect()->refresh(); # refresh the page to show error
@@ -154,7 +154,7 @@ class AuthController extends AbstractActionController
 			
 			switch ($authResult->getCode()) {
 				case Result::FAILURE_IDENTITY_NOT_FOUND:
-					$this->flashMessenger()->addErrorMessage('Unknow email address!');
+					$this->flashMessenger()->addErrorMessage('Unknow account!');
 					return $this->redirect()->refresh(); # refresh the page to show error
 					break;
 					
@@ -170,165 +170,42 @@ class AuthController extends AbstractActionController
 						$ssm->rememberMe($ttl);
 					}
 
-					$setting = $this->settingTable->fetchAllSetting();
-					$lsSetting = [];
-					if ($setting != null) {
-						foreach ($setting as $key => $value) {
-							if ($value['setting_value'] != null) {
-								$lsSetting[$value['setting_name']] = json_decode($value['setting_value'], true);
-							}
-						}
+					// $setting = $this->settingTable->fetchAllSetting();
+					// $lsSetting = [];
+					// if ($setting != null) {
+						// foreach ($setting as $key => $value) {
+						// 	if ($value['setting_value'] != null) {
+						// 		$lsSetting[$value['setting_name']] = json_decode($value['setting_value'], true);
+						// 	}
+						// }
 
 						/**Get job schedule action */
-						$actionSchedule = isset($lsSetting['access_group_product']) ? $lsSetting['access_group_product'] : null;
-
-						/**Get role export*/
-						$exportReportBSVal = isset($lsSetting['role_export_by_schedule']) ? $lsSetting['role_export_by_schedule'] : null;
-
-						/**Get role modify*/
-						$modifyScheduleVal = isset($lsSetting['role_modify_schedule']) ? $lsSetting['role_modify_schedule'] : null;
-
-						/**Get role lock report*/
-						$lockReportVal = isset($lsSetting['role_lock_report']) ? $lsSetting['role_lock_report'] : null;
-
-						/**Get role delete report*/
-						$deleteReportVal = isset($lsSetting['group_user_delete_report']) ? $lsSetting['group_user_delete_report'] : null;
-
-						/**Get role confirm metal detect*/
-						$metalDetectVal = isset($lsSetting['group_user_confirm_metal_detect']) ? $lsSetting['group_user_confirm_metal_detect'] : null;
-
-						/**Get book visitor, book meal */
-						$bookVisitorMeal = isset($lsSetting['group_user_expor_book_visitor']) ? $lsSetting['group_user_expor_book_visitor'] : null;
-
-						/**Get role access QA-QC data */
-						$qaqcAccessVal = isset($lsSetting['group_user_access_qaqc']) ? $lsSetting['group_user_access_qaqc'] : null;
-
-						/**Get role access QA-QC data */
-						$accessPrivateLBVal = isset($lsSetting['access_private_logbook']) ? $lsSetting['access_private_logbook'] : null;
-
-						/**Get role access QA-QC data */
-						$accessCanteenFlap = isset($lsSetting['access_canteen_flap']) ? $lsSetting['access_canteen_flap'] : null;
-						
-						/**Get role edit kpi month */
-						$EditKpiMonthVal = isset($lsSetting['edit_kpi_month']) ? $lsSetting['edit_kpi_month'] : null;
-						
-						/**Get role lock kpi month */
-						$LockKpiMonthVal = isset($lsSetting['lock_kpi_month']) ? $lsSetting['lock_kpi_month'] : null;
-
-						/**Get role modify*/
-						$modifyInOut = isset($lsSetting['group_user_for_add_inout']) ? $lsSetting['group_user_for_add_inout'] : null;
-
-						/**Get role active supplier*/
-						$activeSupplier = isset($lsSetting['access_active_supplier']) ? $lsSetting['access_active_supplier'] : null;
-
-						/**Get role active supplier*/
-						$purchaseFillData = isset($lsSetting['purchase_fill_purchase_data']) ? $lsSetting['purchase_fill_purchase_data'] : null;
-
-						/**Get role active supplier*/
-						$QcFillData = isset($lsSetting['purchase_fill_qc_data']) ? $lsSetting['purchase_fill_qc_data'] : null;
-
-						/**Get role active supplier*/
-						$viewAllPurchaseData = isset($lsSetting['purchase_view_all_data']) ? $lsSetting['purchase_view_all_data'] : null;
-
-						/**Get role view purchase price*/
-						$viewAllPurchaseDataPrice = isset($lsSetting['purchase_view_all_data_price']) ? $lsSetting['purchase_view_all_data_price'] : null;
-
-						/**Get role view kpi month*/
-						$viewKPIMonth = isset($lsSetting['view_kpi_month']) ? $lsSetting['view_kpi_month'] : null;
+						// $actionSchedule = isset($lsSetting['access_group_product']) ? $lsSetting['access_group_product'] : null;
 
 						$storage = $auth->getStorage();
 						$storage->write($authAdapter->getResultRowObject(null, ['created', 'modified']));
 
-						$file = dirname(dirname(dirname(__FILE__))).DS.'data'.DS.'tpl'.DS.'language.json';
-						$file = file_get_contents($file);
-						$phpNative = Json::decode($file, true);
+						// $file = dirname(dirname(dirname(__FILE__))).DS.'data'.DS.'tpl'.DS.'language.json';
+						// $file = file_get_contents($file);
+						// $phpNative = Json::decode($file, true);
 						
 						$container = new Container('user');
-						$container['Fullname'] = $info->getFullname();
-						$container['Email'] = $info->getEmail();
-						$container['Role'] = $info->getRole();
-						$container['Photo'] = $info->getPhoto();
-						$container['Gender'] = $info->getGender();
-						$container['Username'] = $info->getUsername();
-						$container['Code'] = $info->getCode();
-						$container['Dept'] = $info->getDeptCode();
-						$container['GroupWorker'] = $info->getGroupWorker();
-						$container['Branch'] = $info->getBranchCode();
-						$container['Notification'] = 0;
-						$container['Position'] = $info->getPosition();
-						$container['CodeAuto'] = $info->getCodeAuto();
-						$container['language'] = 'language_vn';
-						$containerUser['RequestUserRead'] = false;
-						$containerUser['ChangePassword'] = $info->getDateChangePassword();
+						$container['Fullname'] = $info['fullname'];
+						$container['Username'] = $info['username'];
+						$container['Email'] = $info['email'];
+						// $container['Role'] = $info->getRole();
+						// $container['language'] = 'language_vn';
 
-						$container['Translate'] = $phpNative;
+						// $container['Translate'] = $phpNative;
 
-						if (isset($userRole)) {
-							$container['RoleAccess'] = $userRole;
-						}
-						if ($accessGroupProduct != null) {
-							$container['AccessGroupProduct'] = $accessGroupProduct;
-							$container['ActionSchedule'] = isset($actionSchedule['product-action'][$info->getDeptCode()]) ? 'On' : 'Off';
-						}
-						if ($exportReportBSVal != null) {
-							$container['ExportReportBySchedule'] = isset($exportReportBSVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($modifyScheduleVal != null) {
-							$container['ModifySchedule'] = isset($modifyScheduleVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($lockReportVal != null) {
-							$container['LockReport'] = isset($lockReportVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($deleteReportVal != null) {
-							$container['DeleteReport'] = isset($deleteReportVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($metalDetectVal != null) {
-							$container['ConfirmMetalDetect'] = isset($metalDetectVal[$info->getDeptCode()]) ? 'On' : 'Off';
-						}					
-						if ($bookVisitorMeal != null){
-							$container['ManageVisitorMeal'] = isset($bookVisitorMeal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($qaqcAccessVal != null){
-							$container['AccessQAQCData'] = isset($qaqcAccessVal[$info->getDeptCode()]) ? 'On' : 'Off';
-						}
-						if ($accessPrivateLBVal != null){
-							$container['AccessPrivateLB'] = isset($accessPrivateLBVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($accessCanteenFlap != null){
-							$container['AccessCanteenFlapData'] = isset($accessCanteenFlap[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($EditKpiMonthVal != null){
-							$container['RoleEditKPIMonth'] = isset($EditKpiMonthVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($LockKpiMonthVal != null){
-							$container['RoleLockKPIMonth'] = isset($LockKpiMonthVal[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($modifyInOut != null){
-							$container['RoleAddInOut'] = isset($modifyInOut[$info->getDeptCode()]) ? 'On' : 'Off';
-						}
-						if ($activeSupplier != null){
-							$container['ActiveSupplier'] = isset($activeSupplier[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($purchaseFillData != null){
-							$container['PurchaseFillData'] = isset($purchaseFillData[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($QcFillData != null){
-							$container['QcFillData'] = isset($QcFillData[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($viewAllPurchaseData != null){
-							$container['ViewAllPurchaseData'] = isset($viewAllPurchaseData[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($viewAllPurchaseDataPrice != null){
-							$container['ViewAllPurchaseDataPrice'] = isset($viewAllPurchaseDataPrice[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-						if ($viewKPIMonth != null){
-							$container['ViewKPIMonth'] = isset($viewKPIMonth[$info->getCodeAuto()]) ? 'On' : 'Off';
-						}
-					}
-
-					/**UPDATE date login */
-					$this->usersTable->updateUserByList(['date_login' => date("Y-m-d H:i:s")], "('".$info->getUserId()."')");
-					/**UPDATE date login */
+						// if (isset($userRole)) {
+						// 	$container['RoleAccess'] = $userRole;
+						// }
+						// if ($accessGroupProduct != null) {
+						// 	$container['AccessGroupProduct'] = $accessGroupProduct;
+						// 	$container['ActionSchedule'] = isset($actionSchedule['product-action'][$info->getDeptCode()]) ? 'On' : 'Off';
+						// }
+					// }
 
 					# let us now create the profile route and we will be done
 					$link = $containerUser['Link'];
@@ -385,72 +262,67 @@ class AuthController extends AbstractActionController
 		$request = $this->getRequest();
 		if ($request->isPost()){
 			$dataPost = $request->getPost()->toArray();
-			$checkUser = $this->usersTable->fetchAccountByEmail($dataPost['email']);
+			$checkUser = $this->authenticationTable->getOneByEmail($dataPost['email']);
 			if ($checkUser != null){
 				#Set mail to send
-				$chars = 'abcdefghijklmnopqrstwxyzABCDEFGHIJKLMNOPQRSTXYZ0123456789';
-				$token = '';
+                $codeGen = Uuid::uuid4();
+                
+				$token = $codeGen->toString();
 
-				for($i = 0; $i < 32; $i++) {
-					$random = rand(0, strlen($chars) - 1);
-					$token .= substr($chars, $random, 1); 
-				}
-
-				$dataUpdate['request_pass_token'] = $token;
-				$dataUpdate['request_pass_expired_date'] = date('Y-m-d H:i:s', (strtotime(date('Y-m-d H:i:s')) + 86400));
-				$dataUpdate['user_id'] = $checkUser->getUserId();
+				$dataUpdate['reset_pw_token'] = $token;
+				$dataUpdate['id'] = $checkUser['id'];
 				$dataUpdate['active'] = '0';
 				$updateUser = null;
-				$updateUser = $this->usersTable->saveUsers($dataUpdate);
+				$updateUser = $this->authenticationTable->saveUsers($dataUpdate);
 
-				$checkSetting = $this->settingTable->fetchSettingByColumnArray('setting_name', 'admin_email');
-				if ($updateUser == null && $checkSetting != null && $checkSetting['setting_value'] != null && is_array(json_decode($checkSetting['setting_value'], true))){
-					$lstMailTo = '';
-					$lstMailCc = '';
-					$lstMailBcc = '';
-					$subject = 'Đặt lại mật khẩu';
+				// $checkSetting = $this->settingTable->fetchSettingByColumnArray('setting_name', 'admin_email');
+				// if ($updateUser == null && $checkSetting != null && $checkSetting['setting_value'] != null && is_array(json_decode($checkSetting['setting_value'], true))){
+				// 	$lstMailTo = '';
+				// 	$lstMailCc = '';
+				// 	$lstMailBcc = '';
+				// 	$subject = 'Đặt lại mật khẩu';
 
-					$settingValue = json_decode($checkSetting['setting_value'], true);
-					$actual_link = "https://asm-internal.danonfoods.com/password/reset?token=".$token.'&code='.$checkUser->getUserId();
+				// 	$settingValue = json_decode($checkSetting['setting_value'], true);
+				// 	$actual_link = "https://asm-internal.danonfoods.com/password/reset?token=".$token.'&code='.$checkUser->getUserId();
 					
-					/**Get content mail */
-					$file = dirname(dirname(dirname(__FILE__))).DS.'data'.DS.'tpl'.DS.'forgot.tpl';
-					$file = file_get_contents($file);
-					$content = str_replace('#NAME#', $checkUser->getFullname(), $file);
-					$content = str_replace('#LINK#', $actual_link, $content);
+				// 	/**Get content mail */
+				// 	$file = dirname(dirname(dirname(__FILE__))).DS.'data'.DS.'tpl'.DS.'forgot.tpl';
+				// 	$file = file_get_contents($file);
+				// 	$content = str_replace('#NAME#', $checkUser->getFullname(), $file);
+				// 	$content = str_replace('#LINK#', $actual_link, $content);
 					
-					$lstMailTo .= ($lstMailTo != '' ? ';' :'').($checkUser->getEmail());
+				// 	$lstMailTo .= ($lstMailTo != '' ? ';' :'').($checkUser->getEmail());
 
-					$codeGen = Uuid::uuid4();
-					$job = 'JobMail_'.($codeGen->toString()).'.txt';
+				// 	$codeGen = Uuid::uuid4();
+				// 	$job = 'JobMail_'.($codeGen->toString()).'.txt';
 			
-					$jobMail = (getcwd().'/public/form/jobs/').$job;
-					if (!file_exists($jobMail)) {
-						touch($jobMail);
-					}
+				// 	$jobMail = (getcwd().'/public/form/jobs/').$job;
+				// 	if (!file_exists($jobMail)) {
+				// 		touch($jobMail);
+				// 	}
 
-					$fileHandle = fopen($jobMail, 'w');
-					fwrite($fileHandle, $content);
-					fclose($fileHandle);
+				// 	$fileHandle = fopen($jobMail, 'w');
+				// 	fwrite($fileHandle, $content);
+				// 	fclose($fileHandle);
 
-					if ($lstMailTo != '') {
-						$this->settingTable->saveJobMail([
-							'to' => $lstMailTo,
-							'cc' => $lstMailCc,
-							'bcc' => $lstMailBcc,
-							'subject' => $subject,
-							'content' => $job,
-							'create_date' => date("Y-m-d H:i:s")
-						]);
-					}
+				// 	if ($lstMailTo != '') {
+				// 		$this->settingTable->saveJobMail([
+				// 			'to' => $lstMailTo,
+				// 			'cc' => $lstMailCc,
+				// 			'bcc' => $lstMailBcc,
+				// 			'subject' => $subject,
+				// 			'content' => $job,
+				// 			'create_date' => date("Y-m-d H:i:s")
+				// 		]);
+				// 	}
 
-					$this->flashMessenger()->addSuccessMessage('Gửi yêu cầu thành công. Vui lòng kiểm tra email !');
-					return $this->redirect()->toRoute('login');
-				}
-				else {
-					$this->flashMessenger()->addErrorMessage('Không kết nối được hệ thống !');
-					return $this->redirect()->toRoute('recover-password');
-				}
+				// 	$this->flashMessenger()->addSuccessMessage('Gửi yêu cầu thành công. Vui lòng kiểm tra email !');
+				// 	return $this->redirect()->toRoute('login');
+				// }
+				// else {
+				// 	$this->flashMessenger()->addErrorMessage('Không kết nối được hệ thống !');
+				// 	return $this->redirect()->toRoute('recover-password');
+				// }
 			}
 			else {
 				$this->flashMessenger()->addErrorMessage('Không tồn tại email !');
@@ -466,44 +338,37 @@ class AuthController extends AbstractActionController
 		$this->layout('layout/layout_auth');
 		$token = isset($_GET['token']) ? $_GET['token'] : null;
 		$code = isset($_GET['code']) ? $_GET['code'] : null;
-		$bcrypt = new Bcrypt();
-		$checkUser = $this->usersTable->fetchAccountById($code);
+		// $bcrypt = new Bcrypt();
+		$checkUser = $this->authenticationTable->getOneById($code);
 		$request = $this->getRequest();
 		if ($token != null && $code != null) {
 			/**Check user */
 			if ($checkUser != null) {
-				if($bcrypt->verify($token, $checkUser->getRequestPassToken())) {
+				if($token == $checkUser['reset_pw_token']) {
 
 					$logger = $this->logger;
 					$logger->info($checkUser->getFullname().' | Reset password | '.$_SERVER['REDIRECT_URL'].' | '.$_SERVER['REQUEST_METHOD'].' | '.$_SERVER['HTTP_USER_AGENT']);
-					
-					if (strtotime($checkUser->getRequestPassExpiredDate()) - strtotime(date('Y-m-d H:i:s')) <= 0) {
-						$this->flashMessenger()->addErrorMessage('Xin lỗi. Token đã quá hạn !');
-						return $this->redirect()->toRoute('login');
-					}
-					else {
-						if ($request->isGet()){
-							$this->flashMessenger()->addSuccessMessage('Vui lòng nhập mật khẩu mới !');
-							return new ViewModel();
-						}
-						if ($request->isPost()){
-							$dataPost = $request->getPost()->toArray();
-							$check = $this->usersTable->saveUsers([
-								'user_id' => $dataPost['code'],
-								'request_pass_token' => '',
-								'request_pass_expired_date' => '',
-								'active' => '1',
-								'password' => $dataPost['password']
-							]);
-							if ($check == null) {
-								$this->flashMessenger()->addSuccessMessage('Thay đổi mật khẩu thành công !');
-							}
-							else {
-								$this->flashMessenger()->addErrorMessage('Lỗi trong quá trình thay đổi mật khẩu !');
-							}
-							return $this->redirect()->toRoute('login');
-						}
-					}
+                
+                    if ($request->isGet()){
+                        $this->flashMessenger()->addSuccessMessage('Vui lòng nhập mật khẩu mới !');
+                        return new ViewModel();
+                    }
+                    if ($request->isPost()){
+                        $dataPost = $request->getPost()->toArray();
+                        $check = $this->usersTable->saveUsers([
+                            'id' => $dataPost['code'],
+                            'reset_pw_token' => '',
+                            'active' => '1',
+                            'password' => $dataPost['password']
+                        ]);
+                        if ($check == null) {
+                            $this->flashMessenger()->addSuccessMessage('Thay đổi mật khẩu thành công !');
+                        }
+                        else {
+                            $this->flashMessenger()->addErrorMessage('Lỗi trong quá trình thay đổi mật khẩu !');
+                        }
+                        return $this->redirect()->toRoute('login');
+                    }
 				}
 				else {
 					$this->flashMessenger()->addErrorMessage('Token không chính xác !');

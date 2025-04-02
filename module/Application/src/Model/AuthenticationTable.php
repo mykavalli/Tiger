@@ -48,12 +48,46 @@ class AuthenticationTable extends AbstractTableGateway {
         }
     }
         
-    public function getOneUser($username)
+    public function getOneByUsername($username)
     {
         $dbadapter = $this->adapter;
         $query = "SELECT *
         FROM
             ".$this->table." WHERE username = '".$username."'";
+
+        $handler = $dbadapter->query($query, Adapter::QUERY_MODE_EXECUTE);
+        
+        $data = $handler->toArray();
+        if (empty($data)) {
+            return null;
+        } else {
+            return $data[0];
+        }
+    }
+        
+    public function getOneById($id)
+    {
+        $dbadapter = $this->adapter;
+        $query = "SELECT *
+        FROM
+            ".$this->table." WHERE id = '".$id."'";
+
+        $handler = $dbadapter->query($query, Adapter::QUERY_MODE_EXECUTE);
+        
+        $data = $handler->toArray();
+        if (empty($data)) {
+            return null;
+        } else {
+            return $data[0];
+        }
+    }
+        
+    public function getOneByEmail($email)
+    {
+        $dbadapter = $this->adapter;
+        $query = "SELECT *
+        FROM
+            ".$this->table." WHERE email = '".$email."'";
 
         $handler = $dbadapter->query($query, Adapter::QUERY_MODE_EXECUTE);
         

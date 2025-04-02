@@ -335,10 +335,6 @@ class IndexController extends AbstractActionController
 				}
 
 				$data = $new;
-				// echo '<pre>';
-				// print_r($data);
-				// echo '<pre>';
-				// die;
 			}
 		}
 

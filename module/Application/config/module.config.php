@@ -31,6 +31,48 @@ return [
             //         ],
             //     ],
             // ],
+
+            // Manage authentication routes
+            'login' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/login',
+                    'defaults' => [
+                        'controller' => Controller\AuthController::class,
+                        'action'     => 'login',
+                    ],
+                ],
+            ],
+            'logout' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/logout',
+                    'defaults' => [
+                        'controller' => Controller\AuthController::class,
+                        'action'     => 'logout',
+                    ],
+                ],
+            ],
+            'recover-password' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/password[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\AuthController::class,
+                        'action'     => 'forgot',
+                    ],
+                ],
+            ],
+        	'profile' => [
+        		'type'    => Literal::class,
+        		'options' => [
+        			'route'    => '/profile',
+        			'defaults' => [
+        				'controller' => Controller\AuthController::class,
+        				'action'     => 'profile',
+        			],
+        		],
+        	],
         	'manage-attendance-v2' => [
         		'type'    => Literal::class,
         		'options' => [
@@ -77,6 +119,7 @@ return [
         'factories' => [
             // Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+            Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
         ],
     ],
     'view_manager' => [

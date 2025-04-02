@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Manager\Controller\Factory;
+namespace Application\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Manager\Controller\AuthController;
+use Application\Controller\AuthController;
 use Laminas\Db\Adapter\Adapter;
-use Manager\Model\UsersTable;
-use Manager\Model\AuthenticationTable;
+use Application\Model\UsersTable;
+use Application\Model\AuthenticationTable;
 
 class AuthControllerFactory implements FactoryInterface
 {

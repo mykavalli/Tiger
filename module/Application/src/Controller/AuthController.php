@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Manager\Controller;
+namespace Application\Controller;
 
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -24,8 +24,8 @@ use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Smtp as SmtpTransport;
 use Laminas\Mail\Transport\SmtpOptions;
 
-use Manager\Model\UsersTable;
-use Manager\Model\AuthenticationTable;
+use Application\Model\UsersTable;
+use Application\Model\AuthenticationTable;
 
 use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream;

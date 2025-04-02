@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Manager\Model\Table;
+namespace Manager\Model;
 
 use Laminas\Db\TableGateway\AbstractTableGateway;
 use Laminas\Db\Adapter\Adapter;

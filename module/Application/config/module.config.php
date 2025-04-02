@@ -130,7 +130,7 @@ return [
             // Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
-            Controller\LoggerController::class => Controller\Factory\LoggerControllerFactory::class,
+            Controller\LoggerController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

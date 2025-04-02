@@ -16,6 +16,9 @@ use Laminas\Log\Writer\Stream;
 
 class LoggerController extends AbstractActionController
 {
+    private $logger;
+    private $ip;
+    
 	public function __construct()
 	{
 

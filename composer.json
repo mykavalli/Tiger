@@ -22,7 +22,8 @@
         "laminas/laminas-mvc-plugins": "^1.2.0",
         "laminas/laminas-session": "^2.16.0",
         "laminas/laminas-di": "^3.12.0",
-        "ramsey/uuid": "^4.7"
+        "ramsey/uuid": "^4.7",
+        "laminas/laminas-crypt": "^4.0"
     },
     "autoload": {
         "psr-4": {

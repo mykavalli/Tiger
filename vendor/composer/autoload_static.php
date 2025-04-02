@@ -46,6 +46,7 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
             'Laminas\\Mvc\\I18n\\' => 17,
             'Laminas\\Mvc\\' => 12,
             'Laminas\\ModuleManager\\' => 22,
+            'Laminas\\Math\\' => 13,
             'Laminas\\Log\\' => 12,
             'Laminas\\Loader\\' => 15,
             'Laminas\\Json\\' => 13,
@@ -60,6 +61,7 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
             'Laminas\\Di\\' => 11,
             'Laminas\\DevelopmentMode\\' => 24,
             'Laminas\\Db\\' => 11,
+            'Laminas\\Crypt\\' => 14,
             'Laminas\\Config\\' => 15,
             'Laminas\\ComponentInstaller\\' => 27,
             'Laminas\\Authentication\\' => 23,
@@ -169,6 +171,10 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-modulemanager/src',
         ),
+        'Laminas\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-math/src',
+        ),
         'Laminas\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-log/src',
@@ -224,6 +230,10 @@ class ComposerStaticInitdae2448ce990692cd913673b9073b583
         'Laminas\\Db\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-db/src',
+        ),
+        'Laminas\\Crypt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-crypt/src',
         ),
         'Laminas\\Config\\' => 
         array (

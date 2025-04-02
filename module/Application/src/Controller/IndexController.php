@@ -55,12 +55,11 @@ class IndexController extends AbstractActionController
 
     public function ManageAttendanceV2Action() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -273,12 +272,11 @@ class IndexController extends AbstractActionController
 
     public function DetailAttendanceV2Action() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -627,12 +625,11 @@ class IndexController extends AbstractActionController
 
     public function ManageJobV2Action() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -715,12 +712,12 @@ class IndexController extends AbstractActionController
 
     public function ManageUserAction() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		$containerUser['Link'] = $_SERVER['REQUEST_URI'];
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();

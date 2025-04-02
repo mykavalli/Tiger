@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Manager\Controller;
+namespace Application\Controller;
 
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -18,7 +18,7 @@ class LoggerController extends AbstractActionController
 {
     private $logger;
     private $ip;
-    
+
 	public function __construct()
 	{
 

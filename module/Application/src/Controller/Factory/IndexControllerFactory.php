@@ -8,6 +8,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Controller\IndexController;
 use Application\Model\HRMTable;
+use Application\Model\AuthenticationTable;
 
 class IndexControllerFactory implements FactoryInterface
 {
@@ -15,7 +16,8 @@ class IndexControllerFactory implements FactoryInterface
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
 		return new IndexController(
-			$container->get(HRMTable::class)
+			$container->get(HRMTable::class),
+			$container->get(AuthenticationTable::class),
 		);
 	}
 }

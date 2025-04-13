@@ -1,15 +1,24 @@
 <?php return array(
     'root' => array(
         'name' => 'laminas/laminas-mvc-skeleton',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'fdb2a027e140114db883f9b6d324d8fb193a6a60',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'brick/math' => array(
+            'pretty_version' => '0.12.3',
+            'version' => '0.12.3.0',
+            'reference' => '866551da34e9a618e64a819ee1e01c20d8a588ba',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../brick/math',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'brick/varexporter' => array(
             'pretty_version' => '0.3.8',
             'version' => '0.3.8.0',
@@ -49,6 +58,15 @@
             'reference' => 'e53717277f6c22b1c697a46473b9a5ec9a438efa',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laminas/laminas-config',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'laminas/laminas-crypt' => array(
+            'pretty_version' => '4.0.0',
+            'version' => '4.0.0.0',
+            'reference' => '16ebe744d458ae0d5ab23e85862b7b50628fb481',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laminas/laminas-crypt',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -178,6 +196,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'laminas/laminas-math' => array(
+            'pretty_version' => '3.8.1',
+            'version' => '3.8.1.0',
+            'reference' => 'a9e54f68accf5f8a3e66dd01fc6b32180e520018',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laminas/laminas-math',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'laminas/laminas-modulemanager' => array(
             'pretty_version' => '2.14.0',
             'version' => '2.14.0.0',
@@ -251,9 +278,9 @@
             'dev_requirement' => false,
         ),
         'laminas/laminas-mvc-skeleton' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'fdb2a027e140114db883f9b6d324d8fb193a6a60',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -377,6 +404,30 @@
             'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0.0',
+            ),
+        ),
+        'ramsey/collection' => array(
+            'pretty_version' => '2.1.1',
+            'version' => '2.1.1.0',
+            'reference' => '344572933ad0181accbf4ba763e85a0306a8c5e2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ramsey/collection',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'ramsey/uuid' => array(
+            'pretty_version' => '4.7.6',
+            'version' => '4.7.6.0',
+            'reference' => '91039bc1faa45ba123c4328958e620d382ec7088',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ramsey/uuid',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'rhumsaa/uuid' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '4.7.6',
             ),
         ),
         'webimpress/safe-writer' => array(

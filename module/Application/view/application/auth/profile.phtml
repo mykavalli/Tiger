@@ -1,0 +1,195 @@
+<?php 
+    use Laminas\Session\Container;
+    $containerUser = new Container('user');
+
+    $translate = $containerUser['Translate'][$containerUser['language']];
+?>
+<?= $this->headLink()
+	->prependStylesheet($this->basePath('public/plugins/dropify/css/dropify.min.css'))
+?>
+  <div class="col-md-3">
+
+    <!-- Profile Image -->
+    <div class="card card-primary card-outline">
+      <div class="card-body box-profile">
+        <div class="text-center">
+          <img class="profile-user-img img-fluid img-circle"
+              src="<?php echo $this->basePath('public/img/user/'.($user->getPhoto() != null ? $user->getPhoto() : 'guest.jpg')); ?>"
+              alt="User profile picture">
+        </div>
+
+        <h3 class="profile-username text-center"><?php echo $user->getFullname(); ?></h3>
+
+        <p class="text-muted text-center"><?php echo $user->getDeptName(); ?> - <?php echo $user->getBranchName(); ?></p>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    <!-- Change avatar Box -->
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Avatar</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="user_id" value="<?php echo $user->getUserId(); ?>">
+        <input type="hidden" name="code_auto" value="<?php echo $user->getCodeAuto(); ?>">
+        <input type="hidden" name="change_image" value="1">
+        <div class="fallback mb-3">
+          <input name="avatar" type="file" class="dropify"/>
+        </div>
+        <div class="col-12 text-center"><button class="btn btn-custom-success" type="post"><?php echo $translate['button_update']; ?></button></div>
+      </form>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+  </div>
+  <!-- /.col -->
+  <div class="col-md-9">
+    <div class="card">
+      <div class="card-header p-2">
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab"><?php echo $translate['menu_setting']; ?></a></li>
+        </ul>
+      </div><!-- /.card-header -->
+      <div class="card-body">
+        <div class="tab-content">
+          <!-- /.tab-pane -->
+
+          <div class="tab-pane row col-12  active" id="settings">
+            <form class="form-horizontal row" method="post">
+              <input type="hidden" name="user_id" value="<?php echo $user->getUserId(); ?>">
+              <input type="hidden" name="code_auto" value="<?php echo $user->getCodeAuto(); ?>">
+              <input type="hidden" name="change_profile" value="1">
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="switch" class="w-100"><?php echo $translate['content_approval_user']; ?></label>
+                <input type="checkbox" id="switch" name="approval_user" <?php echo $user->getApprovalUser() == '1' ? 'checked' : ''; ?> data-bootstrap-switch>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="fullname"><?php echo $translate['content_name']; ?></label>
+                <input value="<?php echo $user->getFullname(); ?>" type="text" class="form-control" id="fullname" name="fullname" placeholder="<?php echo $translate['content_name']; ?>">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="nickname"><?php echo $translate['content_nickname']; ?></label>
+                <input value="<?php echo $user->getNickname(); ?>" type="text" class="form-control" id="nickname" name="nickname" placeholder="<?php echo $translate['content_nickname']; ?>">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="code"><?php echo $translate['content_employee_code']; ?></label>
+                <input type="text" id="code" class="form-control" value="<?php echo isset($user) ? $user->getCode() : ''; ?>" placeholder="<?php echo $translate['content_employee_code']; ?>" name="code">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                  <label for="canteen_card"><?php echo $translate['content_canteen_card']; ?></label>
+                  <input type="text" id="canteen_card" class="form-control" value="<?php echo (isset($user) && $user != null) ? $user->getCanteenCard() : ''; ?>" placeholder="Thẻ Canteen" name="canteen_card">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="code"><?php echo 'Email'; ?></label>
+                <input type="text" id="code" class="form-control" value="<?php echo isset($user) ? $user->getEmail() : ''; ?>" placeholder="Email" name="email">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="username"><?php echo $translate['content_username']; ?></label>
+                <input type="text" id="username" class="form-control" value="<?php echo isset($user) ? $user->getUsername() : ''; ?>" placeholder="<?php echo $translate['content_username']; ?>" readonly>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="password"><?php echo $translate['content_password']; ?></label>
+                <input type="password" id="password" class="form-control" value="" placeholder="<?php echo $translate['content_password']; ?>" name="password">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="gender"><?php echo $translate['content_gender']; ?></label>
+                <select id="gender" name="gender" class="form-control custom-select" required>
+                  <option value="">---Lựa chọn---</option>
+                  <option <?php echo (isset($user) && $user->getGender() == 'Male') ? 'selected' : ''; ?> value="Male">Nam</option>
+                  <option <?php echo (isset($user) && $user->getGender() == 'Female') ? 'selected' : ''; ?> value="Female">Nữ</option>
+                </select>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="birthday"><?php echo $translate['content_birth_day']; ?> <small>(dd/mm/YYYY)</small></label>
+                <input type="text" id="birthday" name="birthday" class="form-control date-input" readonly value="<?php echo isset($user) && $user->getBirthDay() != null ? date('d/m/Y', strtotime($user->getBirthDay())) : ''; ?>">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="role"><?php echo $translate['menu_role_access']; ?></label>
+                <input value="<?php echo $user->getRoleName(); ?>" class="form-control" id="role" placeholder="<?php echo $translate['menu_role_access']; ?>" readonly>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="branch"><?php echo $translate['content_branch_name']; ?></label>
+                <input value="<?php echo $user->getBranchName(); ?>" type="text" class="form-control" id="branch" placeholder="<?php echo $translate['content_branch_name']; ?>" readonly>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="dept"><?php echo $date = $translate['menu_dept']; ?></label>
+                <input value="<?php echo $user->getDeptName(); ?>" type="text" class="form-control" id="dept" placeholder="Bộ phận" readonly>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="position"><?php echo $translate['content_position']; ?></label>
+                <input value="<?php echo $positions; ?>" type="text" class="form-control" id="position" placeholder="<?php echo $translate['content_position']; ?>" readonly>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="tel"><?php echo $translate['content_tel']; ?></label>
+                <input value="<?php echo $user->getTel(); ?>" type="text" class="form-control" id="tel" name="tel" placeholder="<?php echo $translate['content_tel']; ?>">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="fax">Fax</label>
+                <input value="<?php echo $user->getFax(); ?>" type="text" class="form-control" id="fax" name="fax" placeholder="Fax">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="mobile"><?php echo $translate['content_mobile']; ?></label>
+                <input value="<?php echo $user->getMobile(); ?>" type="text" class="form-control" id="mobile" name="mobile" placeholder="<?php echo $translate['content_mobile']; ?>">
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-4 form-group">
+                <label for="website">Website</label>
+                <input value="<?php echo $user->getWebsite(); ?>" type="text" class="form-control" id="website" name="website" placeholder="Website">
+              </div>
+              <div class="col-12 form-group">
+                <label for="address"><?php echo $translate['content_address']; ?></label>
+                <input value="<?php echo $user->getAddress(); ?>" type="text" class="form-control" id="address" name="address" placeholder="<?php echo $translate['content_address']; ?>">
+              </div>
+              <div class="col-12 text-center mt-3">
+                <button type="submit" class="btn btn-custom-success"><i class="fa fa-save pr-2"></i><?php echo $translate['button_save']; ?></button>
+              </div>
+            </form>
+            <div class="user-info">
+              <span class="text-bold"><?php echo $user->getFullname(); ?> <?php echo $user->getNickname() != '' ? "   (".($user->getGender() == 'Male' ? 'Mr.' : 'Ms.').($user->getNickname()).")" : ""; ?></span><span>, <?php echo $positions.' '.($user->getDeptName()); ?></span><br>
+              <span class="text-bold">DAN ON FOODS CORPORATION</span><br>
+              <span><?php echo $user->getAddress(); ?></span><br>
+              <div>
+                <span class="text-bold">Tel: </span><?php echo $user->getTel() != '' ? ($user->getTel()).' | ' : ''; ?> 
+                <span class="text-bold">Fax: </span><?php echo $user->getFax() != '' ? ($user->getFax()).' | ' : '';?> 
+                <span class="text-bold">Mobile: </span> <?php echo $user->getMobile() != '' ? ($user->getMobile()).' | ' : '';?>
+                <span class="text-bold">Email: </span><?php echo $user->getEmail() != '' ? ($user->getEmail()).' | ' : ''; ?>
+                <span class="text-bold">Website: </span><a href="<?php echo $user->getWebsite(); ?>"><u><?php echo $user->getWebsite(); ?></u></a>
+                <p class="text-success font-italic">*Please consider the enviroment before printing this email</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.tab-content -->
+      </div><!-- /.card-body -->
+    </div>
+  <!-- /.card -->
+  </div>
+  <?= $this->inlineScript()
+      ->prependFile($this->basePath('public/plugins/bootstrap-switch/js/bootstrap-switch.min.js'))
+      ->prependFile($this->basePath('public/plugins/dropify/js/dropify.min.js'))
+      ->prependFile($this->basePath('public/js/input-file.min.js'))
+      ->prependFile($this->basePath('public/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js'))
+      ->prependFile($this->basePath('public/plugins/inputmask/jquery.inputmask.min.js'))
+      ->prependFile($this->basePath('public/plugins/moment/moment.min.js'))
+  ?>
+<!-- Page specific script -->
+<script type="text/javascript">
+	$(function () {
+        $.get("https://api.ipify.org?format=json", function(data){
+            console.log(data.ip);
+        });
+    $('[data-mask]').inputmask();
+    
+    $('.dropify').dropify();
+    
+
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    })
+
+	});
+</script>

@@ -1,0 +1,74 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+<!-- layout Auth -->
+<?= $this->doctype() ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('Coconuts - Management system')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?= $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/public/img/layout/favicon.ico'])
+            ->prependStylesheet($this->basePath('public/css/bootstrap.min.css'))
+            ->prependStylesheet($this->basePath('public/plugins/fontawesome-free/css/all.min.css'))
+            ->prependStylesheet($this->basePath('public/plugins/icheck-bootstrap/icheck-bootstrap.min.css'))
+            ->prependStylesheet($this->basePath('public/css/layout_adm.css'))
+        ?>
+
+        <!-- Scripts -->
+        <?= $this->headScript()
+            ->prependFile($this->basePath('public/js/jquery-3.5.1.min.js'))
+        ?>
+        <link href="<?php echo $this->basePath('public/css/custom-auth.css'); ?>" media="screen" rel="stylesheet" type="text/css">
+
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-6TBTFG54E9');
+        </script>
+        
+    </head>
+    <body class="login-page">
+        <div class="container">
+            <div class="text-center mt-2">
+                <img src="<?php echo $this->basePath('public/img/layout/Logo.jpg'); ?>" style="width: 128px;" alt="Coconuts Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            </div>
+        	<?= $this->partial('partial/flash.phtml', $this->flashMessenger()); ?>
+            <?= $this->content ?>
+            <footer class="text-center">
+                <strong>Copyright &copy; 2025 <a href="https://tuongvi.ethanworkspace.com">Coconuts</a>.</strong>
+                All rights reserved.
+            </footer>
+        </div>
+        <?= $this->inlineScript()
+            ->prependFile($this->basePath('public/plugins/jquery-validation/additional-methods.min.js')) 
+            ->prependFile($this->basePath('public/plugins/jquery-validation/jquery.validate.min.js')) 
+            ->prependFile($this->basePath('public/js/layout_adm.js')) 
+            ->prependFile($this->basePath('public/js/jquery.timeago.js'))
+            ->prependFile($this->basePath('public/js/bootstrap.min.js'))
+            ->prependFile($this->basePath('public/plugins/bootstrap/js/bootstrap.bundle.min.js'))
+        ?>
+        <script type="text/javascript">
+            $(function() {
+                $('.mainAlert').fadeOut(10000, function() {
+                    $(this).remove();
+                });
+
+                $('.timeago').timeago();
+
+                /** if you want to display cool tooltips do this */
+                $('[data-toggle="tooltip"]').tooltip({ placement: 'bottom' });
+            });
+        </script>
+    </body>
+</html>

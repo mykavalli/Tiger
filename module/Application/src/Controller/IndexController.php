@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Session\Container;
@@ -12,6 +13,7 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Json\Json;
 
 use Application\Model\HRMTable;
+use Application\Model\AuthenticationTable;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -24,10 +26,12 @@ use Ramsey\Uuid\Uuid;
 class IndexController extends AbstractActionController
 {
 	private $hrmTable;
+	private $authenticationTable;
 	
-	public function __construct(HrmTable $hrmTable)
+	public function __construct(HrmTable $hrmTable, AuthenticationTable $authenticationTable)
 	{
 		$this->hrmTable = $hrmTable;
+		$this->authenticationTable = $authenticationTable;
 		
 		$this->pathDownload = getcwd().'/htdocs/public/downloads/';
 		$this->pathReader = getcwd().'/htdocs/public/form/';
@@ -52,12 +56,11 @@ class IndexController extends AbstractActionController
 
     public function ManageAttendanceV2Action() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -270,12 +273,11 @@ class IndexController extends AbstractActionController
 
     public function DetailAttendanceV2Action() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -335,10 +337,6 @@ class IndexController extends AbstractActionController
 				}
 
 				$data = $new;
-				// echo '<pre>';
-				// print_r($data);
-				// echo '<pre>';
-				// die;
 			}
 		}
 
@@ -628,12 +626,11 @@ class IndexController extends AbstractActionController
 
     public function ManageJobV2Action() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -716,12 +713,12 @@ class IndexController extends AbstractActionController
 
     public function ManageUserAction() {
 		/* Check auth */
-		// $auth = new AuthenticationService();
-		// $containerUser = new Container('user');
-		// $containerUser['Link'] = $_SERVER['REQUEST_URI'] != '/roles/check' ? $_SERVER['REQUEST_URI'] : '';
-		// if (!$auth->hasIdentity()){
-		// 	return $this->redirect()->toRoute('login');
-		// }
+		$auth = new AuthenticationService();
+		$containerUser = new Container('user');
+		$containerUser['Link'] = $_SERVER['REQUEST_URI'];
+		if (!$auth->hasIdentity()){
+			return $this->redirect()->toRoute('login');
+		}
 		
         /* Check role */
         $routeMatch = $this->getEvent()->getRouteMatch();
@@ -747,9 +744,8 @@ class IndexController extends AbstractActionController
 		}
 		if (isset($_GET['status']) && $_GET['status'] != '') {
 			$dataSearch['status'] = $_GET['status'];
-		} else {
-			$dataSearch['status'] = 'active';
 		}
+		
 		// if (isset($_GET['jobs']) && $_GET['jobs'] != '') {
 		// 	$dataSearch['jobs'] = $_GET['jobs'];
 		// }

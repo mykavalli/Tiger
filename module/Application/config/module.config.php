@@ -52,9 +52,12 @@ return [
         		],
         	],
         	'manage-job-v2' => [
-        		'type'    => Literal::class,
+        		'type'    => Segment::class,
         		'options' => [
-        			'route'    => '/v2/manage-job',
+        			'route'    => '/v2/manage-job[/:id]',
+        			'constraints' => [
+        				'id' => '[a-zA-Z0-9_-]*',
+        			],
         			'defaults' => [
         				'controller' => Controller\IndexController::class,
         				'action'     => 'ManageJobV2',
